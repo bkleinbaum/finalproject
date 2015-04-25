@@ -1,7 +1,6 @@
-//create the boundries
-var council ='https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson'
+var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');   
+console.log(councilMap);
 
-$(document).ready(function () {
   // Typical Leaflet setup
   var map = L.map('map').setView([40.731649,-73.977814], 10);
   L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
@@ -9,10 +8,6 @@ $(document).ready(function () {
     maxZoom: 18
   }).addTo(map);
   
-
-
-
-
 
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
@@ -25,7 +20,6 @@ $(':input[name=search]').keydown(function (e) {
   }  
 });
  
-});
 
 function callNominatim(query, map, geoJsonLayer) {
   // This function should call Nominatim using $.getJSON
@@ -35,24 +29,33 @@ function callNominatim(query, map, geoJsonLayer) {
 var link= 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
-var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');   
+
 
 
 $.getJSON(link+query)
   .done(function (data) {
+    // create the boundries
+    // var council = 'https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson';
+    // var councDistrict = $.getJSON(council);
+
     //create the layer
     var lat= data[0].lat;
-    var long = data[0].lon;  
+    var long = data[0].lon;
     geoJsonLayer.clearLayers();
-    map.setView([data[0].lat, data[0].lon, 10]); geoJsonLayer.addData(data[0].geojson);
+    map.setView([lat, long]);
+    map.setZoom(18); 
+    geoJsonLayer.addData(data[0].geojson);
+    //create the point
+    var searchPoint = turf.point([lat, long])
+    //create streetview
     $(".streetview").attr('src', google+lat+comma+long);
     $(".streetview").show();
-    console.log(google+lat+comma+long); 
-    //tag the layer
-    var tagged = turf.tag(geoJsonLayer, councilMap,
-                      'coundist', 'councilDist');
-    console.log(tagged);
+    //tag the point
+    var tagged = turf.tag(searchPoint, councilMap,
+                      'coundist', 'councilDistrict')
+    console.log(searchPoint)
   });     
+
 }
 
 
