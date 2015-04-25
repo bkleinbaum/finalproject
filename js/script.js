@@ -1,5 +1,5 @@
-var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');   
-console.log(councilMap);
+
+// console.log(councilGeoJSON);
 
   // Typical Leaflet setup
   var map = L.map('map').setView([40.731649,-73.977814], 10);
@@ -34,10 +34,6 @@ var comma = ',';
 
 $.getJSON(link+query)
   .done(function (data) {
-    // create the boundries
-    // var council = 'https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson';
-    // var councDistrict = $.getJSON(council);
-
     //create the layer
     var lat= data[0].lat;
     var long = data[0].lon;
@@ -51,7 +47,12 @@ $.getJSON(link+query)
     $(".streetview").attr('src', google+lat+comma+long);
     $(".streetview").show();
     //tag the point
-    var tagged = turf.tag(searchPoint, councilMap,
+    //var councilMap = $.getJSON('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson').toGeoJSON
+    var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');   
+    var councilGeoJson = councilMap.toGeoJSON();
+    console.log(councilGeoJson);
+
+    var tagged = turf.tag(searchPoint, councilGeoJson,
                       'coundist', 'councilDistrict')
     console.log(searchPoint)
   });     
