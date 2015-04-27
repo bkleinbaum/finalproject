@@ -43,18 +43,22 @@ $.getJSON(link+query)
     geoJsonLayer.addData(data[0].geojson);
     //create the point
     var searchPoint = turf.point([lat, long])
+    // console.log(searchPoint)
     //create streetview
     $(".streetview").attr('src', google+lat+comma+long);
     $(".streetview").show();
     //tag the point
-    //var councilMap = $.getJSON('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson').toGeoJSON
-    var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');   
-    var councilGeoJson = councilMap.toGeoJSON();
+    var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
+    //var councilMap = $.getJSON('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
+    // var councilMap = new L.GeoJSON.AJAX('https://cdn.rawgit.com/bkleinbaum/finalproject/master/js/commdist.geojson');
+    // var councilMap = $.getJSON('https://cdn.rawgit.com/bkleinbaum/finalproject/master/js/commdist.geojson');
+    //var councilGeoJson = councilMap.toGeoJSON();
     console.log(councilGeoJson);
+    console.log(searchPoint)
 
     var tagged = turf.tag(searchPoint, councilGeoJson,
-                      'coundist', 'councilDistrict')
-    console.log(searchPoint)
+                      'BoroCD', 'councilDistrict')
+    console.log(tagged)
   });     
 
 }
