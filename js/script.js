@@ -52,7 +52,7 @@ $.getJSON(link+query)
     //var councilMap = $.getJSON('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
     // var councilMap = new L.GeoJSON.AJAX('https://cdn.rawgit.com/bkleinbaum/finalproject/master/js/commdist.geojson');
     // var councilMap = $.getJSON('https://cdn.rawgit.com/bkleinbaum/finalproject/master/js/commdist.geojson');
-    //var councilGeoJson = councilMap.toGeoJSON();
+    var councilGeoJson = councilMap.toGeoJSON();
     console.log(councilGeoJson);
     console.log(searchPoint)
 
