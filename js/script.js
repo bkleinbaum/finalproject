@@ -54,7 +54,8 @@ $.getJSON(link+query)
     $(".streetview").attr('src', google+lat+comma+long);
     $(".streetview").show();
     //tag the point
-   
+   console.log(lat)
+   console.log(long)
     console.log(councilGeoJson);
     console.log(search)
 
