@@ -27,9 +27,10 @@ function callNominatim(query, map, geoJsonLayer) {
   // This function should call Nominatim using $.getJSON
   // Once it receives a response, update the center point
   // of the map
-var councilGeoJson = [councilMap.toGeoJSON()];
+var councilGeoJson = councilMap.toGeoJSON();
 console.log(councilGeoJson);
-var councilArray =turf.featurecollection(councilGeoJson);  
+councilArray = [councilGeoJson]
+var councilFinal =turf.featurecollection(councilArray);  
 var link= 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
@@ -57,7 +58,7 @@ $.getJSON(link+query)
     console.log(councilGeoJson);
     console.log(search)
 
-    var tagged = turf.tag(searchPoint, councilArray,
+    var tagged = turf.tag(searchPoint, councilFinal,
                       'coundist', 'councilDistrict')
     console.log(tagged)
   });     
