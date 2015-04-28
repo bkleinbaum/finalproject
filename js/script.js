@@ -1,5 +1,5 @@
 
-var councilMap = [new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson')];
+var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
  
 // console.log(councilGeoJSON);
 
@@ -27,7 +27,7 @@ function callNominatim(query, map, geoJsonLayer) {
   // This function should call Nominatim using $.getJSON
   // Once it receives a response, update the center point
   // of the map
-var councilGeoJson = turf.featurecollection(councilMap.toGeoJSON());  
+var councilGeoJson = [turf.featurecollection(councilMap.toGeoJSON())];  
 var link= 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
