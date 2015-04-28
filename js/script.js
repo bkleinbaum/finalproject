@@ -42,6 +42,8 @@ $.getJSON(link+query)
     //create the layer
     var lat= data[0].lat;
     var long = data[0].lon;
+    console.log(lat)
+   console.log(long)
     geoJsonLayer.clearLayers();
     map.setView([lat, long]);
     map.setZoom(18); 
@@ -54,8 +56,7 @@ $.getJSON(link+query)
     $(".streetview").attr('src', google+lat+comma+long);
     $(".streetview").show();
     //tag the point
-   console.log(lat)
-   console.log(long)
+ 
     console.log(councilGeoJson);
     console.log(search)
 
