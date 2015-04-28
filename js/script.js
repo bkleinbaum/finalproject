@@ -51,6 +51,8 @@ $.getJSON(link+query)
     //create the point
     var searchPoint = [turf.point([40.68802005, -73.9642238450178])]
     var search = turf.featurecollection(searchPoint);
+    var search2 = [turf.point([lat, long])];
+    var search2col = turf.featurecollection(search2);
     // console.log(searchPoint)
     //create streetview
     $(".streetview").attr('src', google+lat+comma+long);
@@ -58,7 +60,8 @@ $.getJSON(link+query)
     //tag the point
  
     console.log(councilGeoJson);
-    console.log(search)
+    console.log(search);
+    console.log(search2);
 
     var tagged = turf.tag(search, councilFinal,
                       'coundist', 'councilDistrict');
