@@ -31,6 +31,8 @@ var councilGeoJson = councilMap.toGeoJSON();
 console.log(councilGeoJson);
 councilArray = [councilGeoJson]
 var councilFinal =turf.featurecollection(councilArray);  
+
+
 var link= 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
@@ -59,7 +61,7 @@ $.getJSON(link+query)
     $(".streetview").show();
     //tag the point
  
-    console.log(councilGeoJson);
+    console.log(councilFinal);
     console.log(search);
     console.log(search2auto);
 
