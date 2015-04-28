@@ -44,7 +44,8 @@ $.getJSON(link+query)
     map.setZoom(18); 
     geoJsonLayer.addData(data[0].geojson);
     //create the point
-    var searchPoint = turf.featurecollection(turf.point([lat, long]), turf.point([0,0]));
+    var searchPoint = [turf.point([lat, long])]
+    turf.featurecollection(searchPoint);
     // console.log(searchPoint)
     //create streetview
     $(".streetview").attr('src', google+lat+comma+long);
