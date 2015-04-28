@@ -1,4 +1,6 @@
 
+var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
+ 
 // console.log(councilGeoJSON);
 
   // Typical Leaflet setup
@@ -25,7 +27,7 @@ function callNominatim(query, map, geoJsonLayer) {
   // This function should call Nominatim using $.getJSON
   // Once it receives a response, update the center point
   // of the map
-  
+var councilGeoJson = councilMap.toGeoJSON();  
 var link= 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
@@ -48,16 +50,12 @@ $.getJSON(link+query)
     $(".streetview").attr('src', google+lat+comma+long);
     $(".streetview").show();
     //tag the point
-    var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
-    //var councilMap = $.getJSON('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
-    // var councilMap = new L.GeoJSON.AJAX('https://cdn.rawgit.com/bkleinbaum/finalproject/master/js/commdist.geojson');
-    // var councilMap = $.getJSON('https://cdn.rawgit.com/bkleinbaum/finalproject/master/js/commdist.geojson');
-    var councilGeoJson = councilMap.toGeoJSON();
+   
     console.log(councilGeoJson);
     console.log(searchPoint)
 
     var tagged = turf.tag(searchPoint, councilGeoJson,
-                      'BoroCD', 'councilDistrict')
+                      'coundist', 'councilDistrict')
     console.log(tagged)
   });     
 
