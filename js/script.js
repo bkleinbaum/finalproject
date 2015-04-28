@@ -51,7 +51,7 @@ $.getJSON(link+query)
     //create the point
     var searchPoint = [turf.point([40.68802005, -73.9642238450178])]
     var search = turf.featurecollection(searchPoint);
-    var search2 = [turf.point([lat, long])];
+    var search2 = [turf.point([lat, long])]
     var search2col = turf.featurecollection(search2);
     // console.log(searchPoint)
     //create streetview
