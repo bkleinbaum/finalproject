@@ -58,7 +58,7 @@ $.getJSON(link+query)
     console.log(councilGeoJson);
     console.log(search)
 
-    var tagged = turf.tag(searchPoint, councilFinal,
+    var tagged = turf.tag(search, councilFinal,
                       'coundist', 'councilDistrict')
     console.log(tagged)
   });     
