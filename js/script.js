@@ -1,6 +1,7 @@
+L.mapbox.accessToken = 'pk.eyJ1IjoiYms3NDEiLCJhIjoiZFNVcTNvdyJ9.h8G4i4ib7PicRCiejvZW6g';
 
 var councilMap = new L.GeoJSON.AJAX('https://bk741.cartodb.com/api/v2/sql?q=SELECT * FROM new_york_city_council_districts&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson');
- 
+
 // console.log(councilGeoJSON);
 
   // Typical Leaflet setup
@@ -28,9 +29,9 @@ function callNominatim(query, map, geoJsonLayer) {
   // Once it receives a response, update the center point
   // of the map
 var councilGeoJson = councilMap.toGeoJSON();
-console.log(councilGeoJson);
-councilArray = [councilGeoJson]
-var councilFinal =turf.featurecollection(councilArray);  
+
+
+
 var link= 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
@@ -49,8 +50,10 @@ $.getJSON(link+query)
     map.setZoom(18); 
     geoJsonLayer.addData(data[0].geojson);
     //create the point
-    var searchPoint = [turf.point([lat, long])]
-    var search = turf.featurecollection(searchPoint);
+    //var searchPoint = [turf.point([40.68802005, -73.9642238450178])]
+    //var search = turf.featurecollection(searchPoint);
+    var search2 = [turf.point([lat, long])]
+    var search2auto = turf.featurecollection(search2);
     // console.log(searchPoint)
     //create streetview
     $(".streetview").attr('src', google+lat+comma+long);
@@ -58,14 +61,13 @@ $.getJSON(link+query)
     //tag the point
  
     console.log(councilGeoJson);
-    console.log(search)
+    console.log(search2auto);
 
-    var tagged = turf.tag(search, councilFinal,
-                      'coundist', 'councilDistrict')
+    var tagged = turf.tag(search2auto, councilGeoJson,
+                      'coundist', 'cDist');
     console.log(tagged)
   });     
 
 }
-
 
 
