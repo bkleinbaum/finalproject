@@ -37,8 +37,8 @@ var comma = ',';
 $.getJSON(link+query)
   .done(function (data) {
     //create the layer
-    var lat= data[0].lat;
-    var long = data[0].lon;
+    var lat= data[0].lat.replace(/"/g,);;
+    var long = data[0].lon.replace(/"/g,);;
     geoJsonLayer.clearLayers();
     map.setView([lat, long]);
     map.setZoom(18); 
