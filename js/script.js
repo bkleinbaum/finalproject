@@ -61,6 +61,7 @@ $.getJSON(link+query)
     //tag the point
  
     console.log(councilGeoJson);
+    console.log(search);
     console.log(search2auto);
 
     var tagged = turf.tag(search2auto, councilGeoJson,
