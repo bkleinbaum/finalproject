@@ -64,8 +64,8 @@ $.getJSON(link+query)
     console.log(search);
     console.log(search2auto);
 
-    var tagged = turf.tag(search, councilGeoJson,
-                      'coundist', 'councilDistrict');
+    var tagged = turf.tag(search2, councilGeoJson,
+                      'coundist', 'cDist');
     console.log(tagged)
   });     
 
