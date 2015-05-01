@@ -78,7 +78,8 @@ $.getJSON(link+query)
 
     var taggedCB = turf.tag(tagged, cbMapGeoJson,'borocd', 'boroCD');
 
-
+    console.log(tagged);
+    console.log(taggedCB);
 
     });
 
