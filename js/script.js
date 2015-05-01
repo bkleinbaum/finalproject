@@ -69,9 +69,6 @@ $.getJSON(link+query)
     $(".streetview").show();
     
     //tag the point
-    console.log(cbMapGeoJson);
-
-    console.log(search);
 
     var tagged = turf.tag(search, councilGeoJson,
                       'coundist', 'cDist');  
@@ -80,7 +77,7 @@ $.getJSON(link+query)
 
     console.log(tagged);
     console.log(taggedCB);
-
+    console.log(feature.properties.boroCD);
     });
 
 
