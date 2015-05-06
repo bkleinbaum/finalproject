@@ -27,7 +27,7 @@ var councilDistrict;
   // }).addTo(map);
   
 
-  var map = L.map('map').setView([40.731649,-73.977814], 12);
+var map = L.map('map').setView([40.731649,-73.977814], 12);
   
   // Add a base layer. We're using Stamen's Toner:
   //  http://maps.stamen.com/#toner
@@ -36,90 +36,81 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYms3NDEiLCJhIjoiZFNVcTNvdyJ9.h8G4i4ib7PicRCie
 var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.09c0a8ed/{z}/{x}/{y}.png').addTo(map);
 
 
+
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
-
-//google autocomplete
 
   
 // Add an event handler to the search input. When [enter] is
 // pressed, call Nominatim to get the location searched for
 $(':input[name=search]').keydown(function (e) {
   if (e.which === 13) {
-  callNominatim($(this).val(), map, geoJsonLayer);
+  callNominatim($(this).val(), map);
   }  
 });
  
 //create geocode function
-function callNominatim(query, map, geoJsonLayer) {
+function callNominatim(query, map) {
 
 //create links
-var link = 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
+//var link = 'http://nominatim.openstreetmap.org/?format=json&addressdetails=1&polygon_geojson=1&q=';
+var mapBox = 'http://api.tiles.mapbox.com/v4/geocode/mapbox.places/'
+var mapBox2 ='.json?access_token=pk.eyJ1IjoiYms3NDEiLCJhIjoiZFNVcTNvdyJ9.h8G4i4ib7PicRCiejvZW6g'
 var google = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location=';  
 var comma = ','; 
-var reverse = 'http://nominatim.openstreetmap.org/reverse?format=json&lat='
+//var reverse = 'http://nominatim.openstreetmap.org/reverse?format=json&lat='
 var bis = 'http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?boro='
 var zola = 'http://maps.nyc.gov/doitt/nycitymap/template?applicationName=ZOLA&searchType=AddressSearch&addressNumber='
 
 //change files to geoJSON
 var councilGeoJson = councilMap.toGeoJSON();
-console.log(councilGeoJson);
 
 var cbMapGeoJson = cbMap.toGeoJSON();
 
 
 //do the work
-$.getJSON(link+query)
-  .done(function (data) {
+
   
-    //create the layer
+var geo =  new L.GeoJSON.AJAX (mapBox+query+mapBox2)
+      .on('data:loaded', function() {
+        var geoPoint = geo.toGeoJSON();
+          console.log("mapbox", geoPoint);
+    
+    //create the data
+    var lat1 = geoPoint.features[0].geometry.coordinates[1];
+    var long1 = geoPoint.features[0].geometry.coordinates[0];
 
-    var lat = data[0].lat;
-    var long = data[0].lon;
+    console.log("lat",lat1);
 
-
-    var house = data[0].address.house_number;
-    var street = data[0].address.road;
-
-    if (house === undefined){
-      $.getJSON(reverse+lat+'&lon='+long+'&addressdetails=1')
-        .done(function(data){
-       
-          var house = address[0].house_number
-          var street = address[0].road
-          });
-    } 
-    else{
-        console.log(lat)
-    };
+    var house = geoPoint.features[0].address;
+    var street = geoPoint.features[0].text;
 
 
-
-    var lat1 = JSON.parse(lat);
-    var long1 = JSON.parse(long);
-  
-
-    var lat= data[0].lat;
-    var long = data[0].lon;
+    //create the marker
+    map.setView([lat1, long1])
+    map.setZoom(18); 
+    
 
 
     geoJsonLayer.clearLayers();
-    map.setView([lat, long]);
-    map.setZoom(18); 
-    geoJsonLayer.addData(data[0].geojson);
+
+
     //create the point
     var coord = [turf.point([long1, lat1])];
     var search = turf.featurecollection(coord);
-    
+    console.log("search", search)
+
+     geoJsonLayer.addData(search);
+    console.log(geoJsonLayer)
+
     
     //create streetview
-    $(".streetview").attr('src', google+lat+comma+long);
+    $(".streetview").attr('src', google+lat1+comma+long1);
     $(".streetview").show();
     
-    //clear previous info
-    //$("#info").text('');
-    //tag the point
+  
 
+    //tag the point
     var tagged = turf.tag(search, councilGeoJson,
                       'name', 'cDist');  
 
@@ -127,9 +118,10 @@ $.getJSON(link+query)
     console.log("taggedCB", taggedCB)
 
     councilDistrict = taggedCB.features[0].properties.cDist
-    console.log("council",councilDistrict);
+    console.log("council", councilDistrict);
 
     var commBoard = taggedCB.features[0].properties.cb
+
 
 
 //set district color
@@ -160,12 +152,6 @@ function fullMapStyle(feature) {
 
 //set features
 
-function makeCouncil (feature,layer) { 
-  console.log("blah",feature.properties.name)
-  councilMap.bindPopup("<b> Council District: </b>"+feature.properties.name
-
-    )};
-
 
 
 //load the info
@@ -180,12 +166,13 @@ function makeCouncil (feature,layer) {
         $(".CDname").append(councilInfo.features[0].properties.member)
         $(".CDdistrict").append(councilInfo.features[0].properties.name);
         $(".CDwebsite").append(councilInfo.features[0].properties.website);
+        $("#info").show();
       }); 
 
      var CB =  new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_cb where borocb ='+commBoard+cartoKeyGeo, {style:districtStyle})
       .on('data:loaded', function() {
         var cbInfo = CB.toGeoJSON();
-        console.log(cbInfo);
+        console.log("cbinfo", cbInfo);
         $(".CBname").text('');
         $(".CBwebsite").text('');
         $(".BIS").text('')
@@ -195,7 +182,7 @@ function makeCouncil (feature,layer) {
         $(".BIS").append("<a href='"+bis+cbInfo.features[0].properties.boro+'&houseno='+house+'&street='+street+'&go2=+GO+&requestid=0'+"' target="+"'blank'>"+"BIS"+"</a>")
         $(".zola").append("<a href='"+zola+house+'&street='+street+'&borough='+cbInfo.features[0].properties.boroname+"' target="+"'blank'>"+"ZoLa"+"</a>")
         //show the infobox when everything loads
-        $("#info").show();
+        
       }); 
 
 
