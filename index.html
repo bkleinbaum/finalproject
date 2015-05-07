@@ -3,43 +3,58 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Final Project</title>
-	<link rel="stylesheet" href="css/skeleton.css">
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+	
+	
+ 
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+ <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
 
+<div id="map">
 
+</div>	
 
-
-  		<div id="map">
-    		
-    	</div>	
 
 <input type="search" name="search" placeholder="Search for property information" />
 
 <div id = "info">
 	<div id = "infobox">
-  		<div class = "title"> Elected officials and links </div>
-  		<div class = "Council">	  			
-  			<div class = "name"> Council Member<div class = "CDname"></div> </div>
-  			<a class = "cDistMap">Add District to Map</a>
-  			<a class = "allCouncil"> See all Council Districts</a>
-  			<div class = "CDdistrict"></div>
-  			<div class = "CDwebsite"></div>
+  
+  		<div class = "Council">	  
+        <div class = "Head"><u></u></div>
+  			<div class = "name"> Council Member <b><div class = "CDname"></div></b></div>
+        <div class = "district">Council District: <b><div class = "CDdistrict"></div></b></div>
+        <div class = "CDwebsite"></div>
+        <a class = "cDistMap">See this district</a> &#8226;
+  			<a class = "allCouncil"> See all districts</a>
   		</div>
-		<div class = "CB">	  			
-  			<div class = "CBname"></div>
-  			<div class = "CBdistrict"></div>
+    
+		<div class = "CB">	  
+        <div class = "Head"><u></u></div>		
+  			<div class = "district">Community Board: <b><div class = "CBname"></div></b></div>
   			<div class = "CBwebsite"></div>
-  			<a class = "cbMap">Add to Map </a>
+  			<a class = "cbMap">See this district</a> &#8226;
+        <a class = "allCB"> See all districts</a>
   		</div>
+
+      <div class = "mapViews">
+        <div class = "Head"></div> 
+        <a class ="mapColor"> Map View</a> &#8226;
+        <a class ="satellite"> Satellite View</a> 
+      </div>
+      
   		<div class = "websites">
-  			<div class = "BIS"></div>
-  			<div class = "zola"></div>
-  		</div>  	
-		<img class = "streetview"> 
-  		
+          <div class = "Head"><u></u></div> 
+  			  <div class = "BIS"></div>
+  			  <div class = "zola"></div>
+  		</div>  
+
+    
+
+  <div class = "street">
+    <img class = "streetview"> 
+  </div>		
 				
   </div>
 

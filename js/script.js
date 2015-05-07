@@ -3,31 +3,33 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYms3NDEiLCJhIjoiZFNVcTNvdyJ9.h8G4i4ib7PicRCie
 var cartoLink = 'https://bk741.cartodb.com/api/v2/sql?q='
 var cartoKeyGeo = '&api_key=510fe4b5c410a666cea4073681404e8ac73b7338&format=GeoJson'
 var cartoKey = '&api_key=510fe4b5c410a666cea4073681404e8ac73b7338'
-var councilMap = new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_council_map'+cartoKeyGeo);
-var cbMap = new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_cb'+cartoKeyGeo); 
+var councilMap = new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_council_map'+cartoKeyGeo, {onEachFeature: makeCouncil});
+var cbMap = new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_cb'+cartoKeyGeo, {onEachFeature:makeCB}); 
 
 
 var councilDistrict;
 
 
 
+//set popups
+function makeCouncil (feature,layer) { 
+  layer.bindPopup(
+    "<b>Council District: </b>"+feature.properties.name
+    +"<br>"
+    +"<b>Council Member: </b>"+feature.properties.member
+    )};
+
+
+function makeCB(feature,layer) { 
+  layer.bindPopup(
+    "<b> Community Board: </b>"+feature.properties.cb
+      )};
 
 
 
+var map = L.map('map').setView([40.731649,-73.977814], 12)
+        
 
-
-
-
-
-  // Typical Leaflet setup
-  // var map = L.map('map').setView([40.731649,-73.977814], 10);
-  // L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
-  //   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-  //   maxZoom: 18
-  // }).addTo(map);
-  
-
-var map = L.map('map').setView([40.731649,-73.977814], 12);
   
   // Add a base layer. We're using Stamen's Toner:
   //  http://maps.stamen.com/#toner
@@ -35,8 +37,8 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYms3NDEiLCJhIjoiZFNVcTNvdyJ9.h8G4i4ib7PicRCie
 // Replace 'examples.map-i87786ca' with your map id.
 var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.09c0a8ed/{z}/{x}/{y}.png').addTo(map);
 
-
-
+var sat = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.m44ejghn/{z}/{x}/{y}.png')
+ 
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
 
@@ -106,7 +108,7 @@ var geo =  new L.GeoJSON.AJAX (mapBox+query+mapBox2)
     
     //create streetview
     $(".streetview").attr('src', google+lat1+comma+long1);
-    $(".streetview").show();
+
     
   
 
@@ -148,15 +150,29 @@ function fullMapStyle(feature) {
         fillOpacity: .3,
         color:'#FFA6D1',
         };
+  }
+
+//set CB Map color
+function getCBDistrict(d) {
+    return  d == commBoard ? '#DE3385' :
+                        '#ff7f00';           
+}
+
+
+function CBMapStyle(feature) {
+    console.log("name",commBoard)
+      return {
+        fillColor: getCBDistrict(feature.properties.borocb),
+        fillOpacity: .3,
+        color:'#FFA6D1',
+        };
       }
-
-//set features
-
-
 
 //load the info
 
-    var council =  new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_council_map where name ='+councilDistrict+cartoKeyGeo, {style:districtStyle})
+    var council =  new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_council_map where name ='+councilDistrict+cartoKeyGeo, {
+                          style:districtStyle                        
+                        })
       .on('data:loaded', function() {
         var councilInfo = council.toGeoJSON();
         console.log("councilInfo",councilInfo);
@@ -165,8 +181,8 @@ function fullMapStyle(feature) {
         $(".CDwebsite").text('');
         $(".CDname").append(councilInfo.features[0].properties.member)
         $(".CDdistrict").append(councilInfo.features[0].properties.name);
-        $(".CDwebsite").append(councilInfo.features[0].properties.website);
-        $("#info").show();
+        $(".CDwebsite").append("<a href='"+councilInfo.features[0].properties.website+"' target="+"'blank'>"+"Council Website"+"</a>");
+        
       }); 
 
      var CB =  new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_cb where borocb ='+commBoard+cartoKeyGeo, {style:districtStyle})
@@ -178,11 +194,13 @@ function fullMapStyle(feature) {
         $(".BIS").text('')
         $(".zola").text('')
         $(".CBname").append(cbInfo.features[0].properties.cb);
-        $(".CBwebsite").append(cbInfo.features[0].properties.web)
-        $(".BIS").append("<a href='"+bis+cbInfo.features[0].properties.boro+'&houseno='+house+'&street='+street+'&go2=+GO+&requestid=0'+"' target="+"'blank'>"+"BIS"+"</a>")
-        $(".zola").append("<a href='"+zola+house+'&street='+street+'&borough='+cbInfo.features[0].properties.boroname+"' target="+"'blank'>"+"ZoLa"+"</a>")
+        $(".CBwebsite").append("<a href='"+cbInfo.features[0].properties.web+"' target="+"'blank'>"+"Community Board Website"+"</a>")
+        $(".BIS").append("<a href='"+bis+cbInfo.features[0].properties.boro+'&houseno='+house+'&street='+street+'&go2=+GO+&requestid=0'+"' target="+"'blank'>"+"Department of Building Information"+"</a>")
+        $(".zola").append("<a href='"+zola+house+'&street='+street+'&borough='+cbInfo.features[0].properties.boroname+"' target="+"'blank'>"+"Zoning Information"+"</a>")
+        $('.mapColor').css({'background-color':'#F56FFC'});
+        $('.satellite').css({'background-color':'#B1ACBD'});
         //show the infobox when everything loads
-        
+        $("#info").show();
       }); 
 
 
@@ -198,6 +216,14 @@ function fullMapStyle(feature) {
        } else {
             map.removeLayer(councilMap);
             map.removeLayer(CB);
+            map.removeLayer(cbMap);
+
+
+            $(this).css({'background-color':'#F56FFC'});
+            $('.allCB').css({'background-color':'#B1ACBD'});
+            $('.allCouncil').css({'background-color':'#B1ACBD'});
+            $('.cbMap').css({'background-color':'#B1ACBD'});
+
             map.addLayer(council);
             map.fitBounds(council.getBounds());        
         }
@@ -216,7 +242,15 @@ function fullMapStyle(feature) {
        } else {
             map.removeLayer(councilMap);
             map.removeLayer(council);
+            map.removeLayer(cbMap);
+
             map.addLayer(CB);
+
+
+            $(this).css({'background-color':'#F56FFC'});
+             $('.allCB').css({'background-color':'#B1ACBD'});
+            $('.allCouncil').css({'background-color':'#B1ACBD'});
+            $('.cDistMap').css({'background-color':'#B1ACBD'});
             map.fitBounds(CB.getBounds());        
         }    
         });
@@ -232,12 +266,85 @@ function fullMapStyle(feature) {
             councilMap.setStyle(fullMapStyle);
             map.removeLayer(council);
             map.removeLayer(CB);
+            map.removeLayer(cbMap);
+
             map.addLayer(councilMap)
-            councilMap.makeCouncil(makeCouncil);
+
+            $(this).css({'background-color':'#F56FFC'});
+             $('.allCB').css({'background-color':'#B1ACBD'});
+            $('.cbMap').css({'background-color':'#B1ACBD'});
+            $('.cDistMap').css({'background-color':'#B1ACBD'});
             map.fitBounds(council.getBounds());        
-            }    
+            }  
+      });
+
+        $('.allCB').click(function(){
+         event.preventDefault();
+            if(map.hasLayer(cbMap)) {
+            $(this).removeClass('selected');
+            map.removeLayer(cbMap);
+            $(this).css({'background-color':'#B1ACBD'});
+        
+       } else {
+            cbMap.setStyle(CBMapStyle);
+            map.removeLayer(council);
+            map.removeLayer(CB);
+            map.removeLayer(councilMap);
+
+            map.addLayer(cbMap);
+
+
+            $(this).css({'background-color':'#F56FFC'});
+            $('.allCouncil').css({'background-color':'#B1ACBD'});
+            $('.cbMap').css({'background-color':'#B1ACBD'});
+            $('.cDistMap').css({'background-color':'#B1ACBD'});
+            map.fitBounds(council.getBounds());        
+            }      
+
       });
       
+
+ $('.satellite').click(function(){
+         event.preventDefault();
+            if(map.hasLayer(sat)) {
+            $(this).removeClass('selected');
+            map.removeLayer(sat);
+            map.addLayer(mapboxTiles);
+            $(this).css({'background-color':'#B1ACBD'});
+        
+       } else {
+
+
+            $(this).css({'background-color':'#F56FFC'});
+            map.removeLayer(mapboxTiles);
+            map.addLayer(sat);  
+            $('.mapColor').css({'background-color':'#B1ACBD'});
+            }      
+
+      });
+      
+
+ $('.mapColor').click(function(){
+         event.preventDefault();
+            if(map.hasLayer(mapboxTiles)) {
+            $(this).removeClass('selected');
+            map.removeLayer(mapboxTiles);
+            map.addLayer(sat);
+            $(this).css({'background-color':'#B1ACBD'});
+        
+       } else {
+
+
+            $(this).css({'background-color':'#F56FFC'});
+            map.removeLayer(sat);
+            map.addLayer(mapboxTiles);  
+            }      
+
+      });
+      
+
+
+
 
 
     });
