@@ -16,12 +16,12 @@ html, body {
   right: 20px;
   top: 50px;
   bottom: 50px;
-  width: 25%;
+  width: 300px;
   height: 500px;
   background: rgba(255, 255, 255, .8);
-  display: none;
   border-style: solid;
   border-width: 1px;
+  display: none;
 }
 
 .Council, .CB, .websites, .mapViews{
@@ -41,7 +41,12 @@ html, body {
 
 
 .CDwebsite, .cDistMap, .allCouncil, .CBwebsite, .cbMap, .allCB, .websites, .mapViews {
-  font-size: 14px;
+  font-size: 12px;
+  
+}
+
+.CDwebsite, .CBwebsite{
+  padding-bottom: 5px;
 }
 
 .district, .name {
@@ -78,9 +83,13 @@ input[name=search] {
 }
 
 
-.cDistMap,.allCouncil,.cbMap,.allCB {
+.cDistMap,.allCouncil,.cbMap,.allCB, .mapColor, .satellite {
     color: white;
     background-color: #B1ACBD;
     text-decoration: none;
     cursor:pointer;
+    padding: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:black;
 }

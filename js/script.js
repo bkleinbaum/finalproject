@@ -7,8 +7,6 @@ var councilMap = new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_council_map'+ca
 var cbMap = new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_cb'+cartoKeyGeo, {onEachFeature:makeCB}); 
 
 
-var councilDistrict;
-
 
 
 //set popups
@@ -42,11 +40,13 @@ var sat = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.m44ejghn/{z}/{x}/{y
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
 
+var geo;
   
 // Add an event handler to the search input. When [enter] is
 // pressed, call Nominatim to get the location searched for
 $(':input[name=search]').keydown(function (e) {
   if (e.which === 13) {
+    geo=[]
   callNominatim($(this).val(), map);
   }  
 });
@@ -73,16 +73,19 @@ var cbMapGeoJson = cbMap.toGeoJSON();
 //do the work
 
   
-var geo =  new L.GeoJSON.AJAX (mapBox+query+mapBox2)
+geo =  new L.GeoJSON.AJAX (mapBox+query+mapBox2)
       .on('data:loaded', function() {
         var geoPoint = geo.toGeoJSON();
-          console.log("mapbox", geoPoint);
+    //map.removeLayer(councilMap);
+    //map.removeLayer(cbMap);
+    //map.removeLayer(CB);
+    //map.removeLayer(council);
+      
     
     //create the data
     var lat1 = geoPoint.features[0].geometry.coordinates[1];
     var long1 = geoPoint.features[0].geometry.coordinates[0];
 
-    console.log("lat",lat1);
 
     var house = geoPoint.features[0].address;
     var street = geoPoint.features[0].text;
@@ -100,10 +103,8 @@ var geo =  new L.GeoJSON.AJAX (mapBox+query+mapBox2)
     //create the point
     var coord = [turf.point([long1, lat1])];
     var search = turf.featurecollection(coord);
-    console.log("search", search)
 
      geoJsonLayer.addData(search);
-    console.log(geoJsonLayer)
 
     
     //create streetview
@@ -117,10 +118,10 @@ var geo =  new L.GeoJSON.AJAX (mapBox+query+mapBox2)
                       'name', 'cDist');  
 
     var taggedCB = turf.tag(tagged, cbMapGeoJson,'borocb', 'cb');
-    console.log("taggedCB", taggedCB)
 
-    councilDistrict = taggedCB.features[0].properties.cDist
-    console.log("council", councilDistrict);
+
+   var councilDistrict = taggedCB.features[0].properties.cDist
+
 
     var commBoard = taggedCB.features[0].properties.cb
 
@@ -143,8 +144,6 @@ function getDistrict(d) {
 
 
 function fullMapStyle(feature) {
- 
-    console.log("name",councilDistrict)
       return {
         fillColor: getDistrict(feature.properties.name),
         fillOpacity: .3,
@@ -160,7 +159,6 @@ function getCBDistrict(d) {
 
 
 function CBMapStyle(feature) {
-    console.log("name",commBoard)
       return {
         fillColor: getCBDistrict(feature.properties.borocb),
         fillOpacity: .3,
@@ -175,7 +173,7 @@ function CBMapStyle(feature) {
                         })
       .on('data:loaded', function() {
         var councilInfo = council.toGeoJSON();
-        console.log("councilInfo",councilInfo);
+        console.log("CB",councilInfo.features[0].properties.name);
         $(".CDname").text('');
         $(".CDdistrict").text('');
         $(".CDwebsite").text('');
@@ -188,7 +186,7 @@ function CBMapStyle(feature) {
      var CB =  new L.GeoJSON.AJAX(cartoLink+'SELECT * FROM nyc_cb where borocb ='+commBoard+cartoKeyGeo, {style:districtStyle})
       .on('data:loaded', function() {
         var cbInfo = CB.toGeoJSON();
-        console.log("cbinfo", cbInfo);
+        console.log("CB",cbInfo.features[0].properties.cb);
         $(".CBname").text('');
         $(".CBwebsite").text('');
         $(".BIS").text('')
@@ -243,6 +241,7 @@ function CBMapStyle(feature) {
             map.removeLayer(councilMap);
             map.removeLayer(council);
             map.removeLayer(cbMap);
+  
 
             map.addLayer(CB);
 
@@ -298,47 +297,28 @@ function CBMapStyle(feature) {
             $('.allCouncil').css({'background-color':'#B1ACBD'});
             $('.cbMap').css({'background-color':'#B1ACBD'});
             $('.cDistMap').css({'background-color':'#B1ACBD'});
-            map.fitBounds(council.getBounds());        
+            map.fitBounds(CB.getBounds());        
             }      
 
       });
       
 
  $('.satellite').click(function(){
-         event.preventDefault();
-            if(map.hasLayer(sat)) {
-            $(this).removeClass('selected');
-            map.removeLayer(sat);
-            map.addLayer(mapboxTiles);
-            $(this).css({'background-color':'#B1ACBD'});
-        
-       } else {
-
 
             $(this).css({'background-color':'#F56FFC'});
             map.removeLayer(mapboxTiles);
             map.addLayer(sat);  
             $('.mapColor').css({'background-color':'#B1ACBD'});
-            }      
 
       });
       
 
  $('.mapColor').click(function(){
-         event.preventDefault();
-            if(map.hasLayer(mapboxTiles)) {
-            $(this).removeClass('selected');
-            map.removeLayer(mapboxTiles);
-            map.addLayer(sat);
-            $(this).css({'background-color':'#B1ACBD'});
-        
-       } else {
-
 
             $(this).css({'background-color':'#F56FFC'});
             map.removeLayer(sat);
             map.addLayer(mapboxTiles);  
-            }      
+            $('.satellite').css({'background-color':'#B1ACBD'});
 
       });
       
