@@ -93,3 +93,8 @@ input[name=search] {
     border-width: 1px;
     border-color:black;
 }
+
+a:visited, a:link{
+
+  color:blue;
+}
