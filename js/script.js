@@ -326,8 +326,10 @@ $('.allCB').click(function(){
          $('.allCouncil').css({'background-color':'#B1ACBD'});
          $('.cbMap').css({'background-color':'#B1ACBD'});
          $('.cDistMap').css({'background-color':'#B1ACBD'});
-         map.fitBounds(CB.getBounds());        
-         }      
+         map.fitBounds(CB.getBounds())
+         
+         }
+
 
       });
       
