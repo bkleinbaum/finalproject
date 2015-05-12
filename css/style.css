@@ -135,12 +135,9 @@ a:visited, a:link{
     }
 
 input[name=search] {
-  font-size: 16px;
-  position: absolute;
-  z-index: 5000;
-  width: 100%;
   textarea {
   font-size: 16px;
+}
 }
 
 }
