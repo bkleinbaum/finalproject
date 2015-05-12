@@ -219,8 +219,7 @@ input[name=search] {
 }
 
 #space{
-  padding-top: 3px;
-  display:block;
+  display:none;
 }
 
 
