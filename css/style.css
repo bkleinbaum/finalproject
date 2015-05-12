@@ -108,7 +108,7 @@ a:visited, a:link{
   display:none;
 }
 
-
+/*Portrait*/
 
 @media screen and (max-width: 480px){
 
@@ -171,6 +171,8 @@ input[name=search] {
 
 }
 
+/*Landscape*/
+
 @media only screen  and (min-device-width : 375px) and (max-device-width : 667px) and (orientation : landscape) {
 
 
@@ -186,11 +188,12 @@ input[name=search] {
     background-color: #B1ACBD;
     text-decoration: none;
     cursor:pointer;
-    padding: 1px;
+    padding: 5px;
     border-style: solid;
     border-width: 1px;
     border-color:black;
-    }
+
+  }
 
 
 input[name=search] {
