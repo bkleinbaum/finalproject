@@ -177,8 +177,8 @@ input[name=search] {
 
 
   #info {
-    max-width: 40%;
-    height: 350px;
+    max-width: 35%;
+    height: 300px;
     overflow:hidden;
     right: 2px;
   }
