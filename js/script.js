@@ -42,9 +42,12 @@ var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.09c0a8ed/{z
 
 var sat = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.m44ejghn/{z}/{x}/{y}.png')
  
-L.control.geocoder().addTo(map);
+ L.control.geocoder({
+       bbox:true, 
+       placeholder: 'Search within the bounds' //map\'s view/bbox
+        }).addTo(map);
 
- 
+
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
 
