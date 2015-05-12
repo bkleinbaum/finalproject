@@ -47,6 +47,7 @@ var sat = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.m44ejghn/{z}/{x}/{y
        placeholder: 'Search within the bounds' //map\'s view/bbox
         }).addTo(map);
 
+window.addEventListener("hashchange",function(){parent.postMessage(window.location.hash, "*")});
 
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
