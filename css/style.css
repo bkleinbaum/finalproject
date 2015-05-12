@@ -62,7 +62,7 @@ html, body {
 }
 
 input[name=search] {
-  font-size: 24px;
+  font-size: 16px;
   position: absolute;
   top: 10px;
   left: 50px;
@@ -102,3 +102,8 @@ a:visited, a:link{
 
   color:blue;
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/gh-pages
