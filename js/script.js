@@ -188,11 +188,17 @@ function callNominatim(query, map) {
                            '#ff7f00';           
           }
 
+          function CBDistrictOpacity(d) {
+              return  d == 0 ? 0 :
+                           .3;           
+          }
+
+
 
            function CBMapStyle(feature) {
             return {
               fillColor: getCBDistrict(feature.properties.borocb),
-              fillOpacity: .3,
+              fillOpacity: CBDistrictOpacity(feature.properties.borocb),
               color:'#FFA6D1',
               };
             }
@@ -327,7 +333,7 @@ $('.allCB').click(function(){
          $('.cbMap').css({'background-color':'#B1ACBD'});
          $('.cDistMap').css({'background-color':'#B1ACBD'});
          map.fitBounds(CB.getBounds())
-         
+
          }
 
 

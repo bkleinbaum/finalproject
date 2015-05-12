@@ -110,7 +110,7 @@ a:visited, a:link{
 
 
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px){
 
   #info {
     max-width: 40%;
@@ -129,8 +129,6 @@ a:visited, a:link{
     border-width: 1px;
     border-color:black;
     white-space: nowrap;
-
-      
     }
 
 
@@ -170,5 +168,68 @@ input[name=search] {
 .streetview {
   display: none;
 }
+
+}
+
+@media only screen  and (min-device-width : 375px) and (max-device-width : 667px) (orientation : landscape) {
+
+
+  #info {
+    max-width: 40%;
+    height: 400px;
+    overflow:hidden;
+    right: 2px;
+  }
+
+.cDistMap,.allCouncil,.cbMap,.allCB, .mapColor, .satellite {
+    color: white;
+    background-color: #B1ACBD;
+    text-decoration: none;
+    cursor:pointer;
+    padding: 1px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:black;
+    white-space: nowrap;
+    }
+
+
+input[name=search] {
+  font-size: 16px;
+  position: absolute;
+  top: 10px;
+  left: 50px;
+  z-index: 5000;
+  width: 75%;
+  textarea {
+  font-size: 16px;}
+}
+
+
+.Council, .CB, .websites, .mapViews{
+  padding-right: 0;
+  padding-left: 5px;
+
+}
+
+.websites{
+  border-width: 0px;
+}
+
+#space{
+  padding-top: 3px;
+  display:block;
+}
+
+
+.CDname, .CDdistrict, .CBname {
+  display: inline;
+  font-size: 12px;
+}
+
+.streetview {
+  display: none;
+}
+
 
 }
