@@ -67,7 +67,10 @@ input[name=search] {
   top: 10px;
   left: 50px;
   z-index: 5000;
-  width: 55%
+  width: 55%;
+  textarea {
+  font-size: 16px;
+    }
 }
 
 .streetview {
@@ -98,13 +101,4 @@ input[name=search] {
 a:visited, a:link{
 
   color:blue;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
-  select:focus,
-  textarea:focus,
-  input:focus {
-    font-size: 16px;
-    background: #eee;
-  }
 }
