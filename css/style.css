@@ -176,7 +176,7 @@ input[name=search] {
 
   #info {
     max-width: 40%;
-    height: 400px;
+    height: 350px;
     overflow:hidden;
     right: 2px;
   }
@@ -190,7 +190,6 @@ input[name=search] {
     border-style: solid;
     border-width: 1px;
     border-color:black;
-    white-space: nowrap;
     }
 
 
