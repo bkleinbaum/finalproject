@@ -1,3 +1,4 @@
+
 L.mapbox.accessToken = 'pk.eyJ1IjoiYms3NDEiLCJhIjoiZFNVcTNvdyJ9.h8G4i4ib7PicRCiejvZW6g';
 
 
@@ -42,12 +43,6 @@ var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.09c0a8ed/{z
 
 var sat = L.tileLayer('https://{s}.tiles.mapbox.com/v3/bk741.m44ejghn/{z}/{x}/{y}.png')
  
- L.control.geocoder({
-       bbox:true, 
-       placeholder: 'Search within the bounds' //map\'s view/bbox
-        }).addTo(map);
-
-window.addEventListener("hashchange",function(){parent.postMessage(window.location.hash, "*")});
 
 // Create placeholder GeoJSON layer
 var geoJsonLayer = L.geoJson(null).addTo(map);
@@ -364,6 +359,16 @@ $('.mapColor').click(function(){
       
 
 
+      
+$('.method').click(function(){
+    $('#infobox').hide();
+    $('#methodology').show();
+      });
+ 
+ $('.infob').click(function(){
+    $('#infobox').show();
+    $('#methodology').hide();
+      });     
 
 
 
